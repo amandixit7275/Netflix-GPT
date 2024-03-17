@@ -15,7 +15,6 @@ export default function Body() {
       element: <Browse />,
     },
   ]);
-  <h2>hello</h2>;
 
   return (
     <div>
