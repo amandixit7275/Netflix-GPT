@@ -64,7 +64,7 @@ export default function Login() {
         >
           {isSingInForm ? "Sign In" : "Sign up"}
         </button>
-        <p className="p-y-4" onClick={togglesignInForm}>
+        <p className="p-y-4 cursor-pointer" onClick={togglesignInForm}>
           {isSingInForm
             ? "New to Netflix ? Sing Up Now"
             : "Already registered? Sign In Now"}
