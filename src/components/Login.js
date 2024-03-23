@@ -1,6 +1,11 @@
-import React, { isValidElement, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Header from "./Header";
 import { checkValidData } from "../utils/Validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 export default function Login() {
   const [isSingInForm, SetisSignInForm] = useState(true);
@@ -10,13 +15,42 @@ export default function Login() {
   const password = useRef(null);
 
   const handleButtonClick = () => {
-    //Validate the form data
-    //checkValidData(email,password)
-    console.log(email.current.value);
-    console.log(password.current.value);
-
     const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
+    if (message) return;
+    if (!isSingInForm) {
+      //singUp Logic
+      createUserWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed up
+          const user = userCredential.user;
+
+          // ...
+        })
+        .catch((error) => {
+          setErrorMessage(error.message);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current.value,
+        password.current.value
+      )
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log(user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setErrorMessage(errorCode + "-" + errorMessage);
+        });
+    }
   };
 
   function togglesignInForm() {
@@ -32,18 +66,12 @@ export default function Login() {
         />
       </div>
       <form
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={(event) => event.preventDefault()}
         className=" w-1/4  p-12 bg-black absolute my-36 mx-auto right-0 left-0 text-white "
       >
         <h1 className="font-bold text-3xl py-4 ">
           {isSingInForm ? "Sign In" : "Sign up"}
         </h1>
-        <input
-          ref={email}
-          className="p-2 m-2 w-full bg-gray-700 "
-          type="text"
-          placeholder="Email Address"
-        />
         {!isSingInForm && (
           <input
             className="p-2 m-2 w-full bg-gray-700 "
@@ -51,6 +79,13 @@ export default function Login() {
             placeholder="Full Name"
           />
         )}
+        <input
+          ref={email}
+          className="p-2 m-2 w-full bg-gray-700 "
+          type="text"
+          placeholder="Email Address"
+        />
+
         <input
           ref={password}
           className="p-2 m-2 w-full bg-gray-700 "
