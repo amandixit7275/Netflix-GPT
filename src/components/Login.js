@@ -18,6 +18,7 @@ export default function Login() {
     const message = checkValidData(email.current.value, password.current.value);
     setErrorMessage(message);
     if (message) return;
+    //sign up form
     if (!isSingInForm) {
       //singUp Logic
       createUserWithEmailAndPassword(
