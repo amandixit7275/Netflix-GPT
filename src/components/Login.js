@@ -1,18 +1,22 @@
 import React, { useRef, useState } from "react";
 import Header from "./Header";
+import { updateProfile } from "firebase/auth";
+
 import { checkValidData } from "../utils/Validate";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [isSingInForm, SetisSignInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const navigate = useNavigate();
   const email = useRef(null);
   const password = useRef(null);
+  const name = useRef(null);
 
   const handleButtonClick = () => {
     const message = checkValidData(email.current.value, password.current.value);
@@ -29,8 +33,18 @@ export default function Login() {
         .then((userCredential) => {
           // Signed up
           const user = userCredential.user;
-
-          // ...
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://avatars.githubusercontent.com/u/98741267?v=4",
+          })
+            .then(() => {
+              // Profile updated!
+              navigate("/browse");
+            })
+            .catch((error) => {
+              // An error occurred
+              setErrorMessage(error.message);
+            });
         })
         .catch((error) => {
           setErrorMessage(error.message);
@@ -44,7 +58,7 @@ export default function Login() {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          console.log(user);
+          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -75,6 +89,7 @@ export default function Login() {
         </h1>
         {!isSingInForm && (
           <input
+            ref={name}
             className="p-2 m-2 w-full bg-gray-700 "
             type="text"
             placeholder="Full Name"
