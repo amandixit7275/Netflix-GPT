@@ -24,3 +24,5 @@ export const SUPPORTED_LANGUAGES = [
   { identifier: "latin", name: "Latin" },
   { identifier: "chinese", name: "Chinese" },
 ];
+
+export const OPENAI_KEY = "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";
