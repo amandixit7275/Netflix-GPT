@@ -1,15 +1,27 @@
 import React, { useRef } from "react";
 import lang from "../utils/languageConstant";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import openai from "../utils/openai";
+import { API_OPTIONS } from "../utils/constant";
+import { addGptMovieResult } from "../utils/gptSlice";
 
 export default function GptSearchBar() {
   const langKey = useSelector((store) => store.config.lang);
   const searchText = useRef(null);
+  const dispatch = useDispatch();
+
+  //Search movie in TMDB
+  const searchMovieTMDB = async (movie) => {
+    const data = await fetch(
+      `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`,
+      API_OPTIONS
+    );
+
+    const json = await data.json();
+    return json.results;
+  };
 
   async function handleGptSearchClick() {
-    console.log(searchText.current.value);
-
     const gptQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
@@ -21,7 +33,15 @@ export default function GptSearchBar() {
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: gptQuery }],
     });
-    console.log(gptResults.choices);
+
+    const gptMovies = gptResults?.choices[0]?.message?.content.split(",");
+
+    const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
+
+    const tmdbResults = await Promise.all(promiseArray);
+    dispatch(
+      addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
+    );
   }
 
   return (
