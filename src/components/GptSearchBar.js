@@ -35,6 +35,7 @@ export default function GptSearchBar() {
     });
 
     const gptMovies = gptResults?.choices[0]?.message?.content.split(",");
+    console.log(gptMovies);
 
     const promiseArray = gptMovies.map((movie) => searchMovieTMDB(movie));
 
@@ -42,6 +43,7 @@ export default function GptSearchBar() {
     dispatch(
       addGptMovieResult({ movieNames: gptMovies, movieResults: tmdbResults })
     );
+    console.log(tmdbResults);
   }
 
   return (
