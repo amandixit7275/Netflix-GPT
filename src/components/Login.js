@@ -84,13 +84,17 @@ export default function Login() {
     <div>
       <Header />
       <div className="absolute">
-        <img src={BG_URL} alt="logo" />
+        <img
+          className="h-screen md:h-full object-cover  "
+          src={BG_URL}
+          alt="logo"
+        />
       </div>
       <form
         onSubmit={(event) => event.preventDefault()}
-        className=" w-1/4  p-12 bg-black absolute my-36 mx-auto right-0 left-0 text-white "
+        className=" w-full md:w-1/4  p-12 bg-black opacity-85 absolute my-36 mx-auto right-0 left-0 text-white "
       >
-        <h1 className="font-bold text-3xl py-4 ">
+        <h1 className="font-bold text-2xl md:text-3xl py-4 ">
           {isSingInForm ? "Sign In" : "Sign up"}
         </h1>
         {!isSingInForm && (

@@ -22,6 +22,7 @@ export default function GptSearchBar() {
   };
 
   async function handleGptSearchClick() {
+    if (!searchText.current.value) return;
     const gptQuery =
       "Act as a Movie Recommendation system and suggest some movies for the query : " +
       searchText.current.value +
@@ -47,10 +48,10 @@ export default function GptSearchBar() {
   }
 
   return (
-    <div className="py-[8%] flex justify-center ">
+    <div className=" pt-[40%] md:pt-[10%]  flex justify-center ">
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="bg-black w-1/2 grid grid-cols-12 "
+        className="bg-black w-full md:w-1/2 grid grid-cols-12 "
       >
         <input
           type="text"
@@ -60,7 +61,7 @@ export default function GptSearchBar() {
         />
         <button
           onClick={handleGptSearchClick}
-          className=" col-span-3 m-4 px-4 py-2 bg-red-700 text-white rounded-lg"
+          className=" col-span-3 m-4 px-4 py-2 bg-red-700 text-sm text-white rounded-lg"
         >
           {lang[langKey].search}
         </button>

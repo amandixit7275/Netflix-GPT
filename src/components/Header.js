@@ -60,10 +60,10 @@ export default function Header() {
     dispatch(changeLanguage(e.target.value));
   }
   return (
-    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex justify-between">
-      <img className="w-44" src={LOGO} alt="" />
+    <div className="absolute w-screen px-8 py-2 bg-gradient-to-b from-black z-10 flex flex-col md:flex-row justify-center md:justify-between ">
+      <img className="w-44 mx-auto md:mx-0 " src={LOGO} alt="" />
       {user && (
-        <div className="flex p-2">
+        <div className="flex md:p-2  justify-between ">
           {showGptSearch && (
             <select
               onChange={handleLanguageChange}
@@ -85,7 +85,11 @@ export default function Header() {
           >
             {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
-          <img className="w-12 h-12" src={user?.photoURL} alt="logo" />
+          <img
+            className=" hidden md:block w-12 h-12"
+            src={user?.photoURL}
+            alt="logo"
+          />
           <button onClick={handleSignOut} className="font-bold text-white">
             (Sign Out)
           </button>

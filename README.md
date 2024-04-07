@@ -41,6 +41,14 @@
   - Gpt search bar
   - (BONUS) Multi laguage feature in our App.
     #Features
+  - Gpt search API call
+  - fetched movie suggestion from Tmdb
+  - Gpt slice and added data there
+  - Reuse movie list component to make movie suggestion container
+  - added Memoization
+  - added .env file
+  - added .env file to git ignore
+  - Made our side responsive
 
 - Login/Sign Up
   - Sign In/Sign up Form
